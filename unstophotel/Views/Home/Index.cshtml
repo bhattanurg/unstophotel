@@ -1,0 +1,47 @@
+﻿@model List<Room>
+
+@{
+    ViewBag.Title = "Hotel Room Reservation System";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<form method="post" action="/Home/BookRooms">
+    <label>No of Rooms:</label>
+    <input type="number" name="roomsRequired" min="1" max="5" required />
+    <button type="submit">Book</button>
+</form>
+
+<form method="post" action="/Home/Reset" style="display: inline;">
+    <button type="submit">Reset</button>
+</form>
+
+<form method="post" action="/Home/RandomizeOccupancy" style="display: inline;">
+    <button type="submit">Random</button>
+</form>
+
+<h2>Room Visualization</h2>
+
+<div style="display: flex; flex-wrap: wrap; max-width: 600px;">
+    @for (int floor = 1; floor <= 10; floor++)
+    {
+        <div>
+            <h3>Floor @floor</h3>
+            <div style="display: flex; flex-wrap: wrap;">
+                @foreach (var room in Model.Where(r => r.Floor == floor))
+                {
+                    <div style="width: 50px; height: 50px; border: 1px solid black; margin: 2px; text-align: center;
+                        line-height: 50px; background-color: @(room.IsBooked ? "red" : "white"); color: black;">
+                        @room.RoomNumber
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    }
+</div>
+
+@if (!string.IsNullOrEmpty(ViewBag.Message as string))
+{
+    <p style="color: green;">@ViewBag.Message</p>
+}
